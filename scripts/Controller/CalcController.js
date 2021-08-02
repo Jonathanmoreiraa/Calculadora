@@ -1,5 +1,7 @@
 class CalcController{
     constructor(){
+        this._audio = new Audio('click.mp3');
+        this._audioOnOff = false; //de inicio está desligado
         this._lastOperator = '';
         this._lastNumber = '';
         this._operation = [];
@@ -20,9 +22,38 @@ class CalcController{
         }, 1000); 
         
         this.setLastNumberToDisplay();
+
+        document.querySelectorAll('.btn-ac').forEach(btn=>{
+           btn.addEventListener('dblclick', e=>{
+
+                this.toggleAudio(); //verifica se o áudio está ligado ou desligado
+
+           }); 
+        });
+    }
+    toggleAudio(){
+        if(this._audioOnOff){
+            this._audioOnOff = false;
+        }else{
+            this._audioOnOff = true;
+        }
+
+        //UMA FORMA MAIS SIMPLES DE FAZER O IF E ELSE
+        //this._audioOnOff = (this._audioOnOff) ? false : true;
+
+        //Por ser booleano ainda existe outra forma
+        //this._audioOnOff = !this._audioOnOff;
+
+    }
+    playAudio(){
+        if (this._audioOnOff){
+            this._audio.currentTime = 0; //sempre toca o audio do inicio
+            this._audio.play();
+        }
     }
     initKeyboard(){
         document.addEventListener('keyup', e=>{ 
+            this.playAudio();
             switch (e.key){
                 case 'Delete':
                     this.clearAll()
@@ -97,9 +128,14 @@ class CalcController{
 
     }
     getResult(){
-
-
-        return eval(this._operation.join(""));
+        try{
+            return eval(this._operation.join(""));
+        }catch(e){
+            setTimeout(()=>{
+                this.setError();
+            },0) //espera 0 milisegundos para fazer essa ação dento das chaves.
+        }
+        
     }
     calc(){
         let last = '';
@@ -117,9 +153,6 @@ class CalcController{
         }else if (this._operation.length == 3){
             this._lastNumber = this.getLastItem(false);//guarda o último número
         }
-        
-        console.log('_lastOperator: ', this._lastOperator)
-        console.log('_lastNumber: ', this._lastNumber)
         let result = this.getResult();//usa os valores digitados e retira as "," usando o join.
         if(last=='%'){ //calcula as operações com porcentagem.
             let por = (this._operation[0]*this._operation[2])/100;
@@ -173,7 +206,6 @@ class CalcController{
             if(this.isOperator(value)){
                 return this.setLastoperation(value); //troca o último index (operador) e troca por outro.
             }else if (isNaN(value)){
-                console.log("Bora ",value)
             }else{
                 this.pushOperation(value)
                 this.setLastNumberToDisplay();
@@ -208,6 +240,7 @@ class CalcController{
         this.displayCalc = "Error";
     }
     execBtn(value){
+        this.playAudio();
         switch (value){
             case 'ac':
                 this.clearAll()
@@ -296,6 +329,10 @@ class CalcController{
         return this._displayCalcEl.innerHTML;
     }
     set displayCalc(value){
+        if (value.toString().length > 10){
+            this.setError();
+            return false;
+        }
         this._displayCalcEl.innerHTML = value;
     }
     get currentDate(){
