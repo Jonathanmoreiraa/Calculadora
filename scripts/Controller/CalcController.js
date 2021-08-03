@@ -182,12 +182,19 @@ class CalcController{
             let por = (this._operation[0]*this._operation[2])/100;
             let ult = this._operation[2];
             last = this._operation.pop();
+            console.log(this._operation);
             switch (this._operation[1]) {
                 case '+':
-                    result = last+por;
+                    if( this._operation[0]>9){
+                        this._operation[0] = parseFloat(this._operation[0])
+                    }
+                    result =  this._operation[0]+por;
                     break;
                 case '-':
-                    result = last-por;
+                    if( this._operation[0]>9){
+                        this._operation[0] = parseFloat(this._operation[0])
+                    }
+                    result =  this._operation[0]-por;
                     break;
                 case '*':
                     result = por;
