@@ -15,6 +15,26 @@ class CalcController{
         this.initKeyboard();
     
     }
+    copyToClipboard(){
+        let input = document.createElement('input');
+
+        input.value = this.displayCalc;
+
+        document.body.appendChild(input);
+
+        input.select();
+
+        document.execCommand("Copy");
+
+        input.remove(); //remove o input da tela
+    }
+    pasteFromClipboard(){
+        document.addEventListener('paste', e=>{
+            let paste = e.clipboardData.getData('Text');
+            this.displayCalc = parseFloat(paste);
+        });
+
+    }
     initialize(){
         this.setdisplayDateTime()
         setInterval(()=>{
@@ -22,6 +42,7 @@ class CalcController{
         }, 1000); 
         
         this.setLastNumberToDisplay();
+        this.pasteFromClipboard();
 
         document.querySelectorAll('.btn-ac').forEach(btn=>{
            btn.addEventListener('dblclick', e=>{
@@ -88,6 +109,9 @@ class CalcController{
                 case '8':
                 case '9':
                     this.addOperation(e.key);
+                    break;
+                case 'c':
+                    if (e.ctrlKey) this.copyToClipboard(); //verifica se o ctrl foi selecionado ao copiar.
                     break;
             }
         }); //keyup captura a tecla na hr que ela é pressionada
