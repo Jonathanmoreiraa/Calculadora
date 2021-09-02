@@ -1,8 +1,5 @@
 # Calculadora em JavaScript
 
-A calculadora é um projeto simples, foi o meu primeiro contato com o JavaScript, sendo assim, possui funcionalidades simples, mas, efetivas.
-
-
 ## 📑 Sobre o projeto
 
 A calculadora é um projeto simples, foi o meu primeiro contato com o JavaScript, sendo assim, possui funcionalidades simples, mas, efetivas.
