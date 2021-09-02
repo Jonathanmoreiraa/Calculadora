@@ -1,5 +1,7 @@
 # Calculadora em JavaScript
 
+[![GitHub](https://img.shields.io/github/license/Jonathanmoreiraa/Calculadora)](https://github.com/Jonathanmoreiraa/Calculadora/blob/main/LICENSE)
+
 ## 📑 Sobre o projeto
 
 A calculadora é um projeto simples, foi o meu primeiro contato com o JavaScript, sendo assim, possui funcionalidades simples, mas, efetivas.
